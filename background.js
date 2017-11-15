@@ -13,7 +13,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     // STARTS and Resets the loop if any
     function startLoop() {
         if(myInterval > 0) clearInterval(myInterval);  // stop
-        myInterval = setInterval( "doSomething()", iFrequency );  // run
+        myInterval = setInterval( doSomething(), iFrequency );  // run
     }
 
     function doSomething()
