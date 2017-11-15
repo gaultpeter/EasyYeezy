@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Easy Yeezy",
+    "name": "Ez-Yeezy",
     "description": "Splash screen auto refresh",
     "version": "0.1",
     "permissions": [
@@ -17,7 +17,7 @@
     },
     "browser_action": {
         "default_icon": "icon.png",
-        "default_title": "Easy Yeezy"
+        "default_title": "Ez-Yeezy"
     },
     "author": {
         "name": "Peter G",
