@@ -1,41 +1,35 @@
 // triggered when user clicks on installed extention icon
 chrome.browserAction.onClicked.addListener(function(tab) {
-    
-    // retrive domain from active tab
-    var url = tab.url;
-    var matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-    var d = matches && matches[1].replace('www.','');
-    d = '.'+d;
 
-    var iFrequency = 20000; // expressed in miliseconds
-    var myInterval = 0;
+    setInterval(function() {
+      // method to be executed;
+      // retrive domain from active tab
+          var url = tab.url;
+          var matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+          var d = matches && matches[1].replace('www.','');
+          d = '.'+d;
 
-    // STARTS and Resets the loop if any
-    function startLoop() {
-        if(myInterval > 0) clearInterval(myInterval);  // stop
-        myInterval = setInterval( doSomething(), iFrequency );  // run
-    }
+          // get all cookies for domain
+          chrome.cookies.getAll({domain: d}, function (cookies) {
 
-    function doSomething()
-    {
-         // get all cookies for domain
-            chrome.cookies.getAll({domain: d}, function (cookies) {
+              // iterate on cookie to get cookie detail
+              for (var i=0; i<cookies.length; i++) {
+                  var url = "http" + (cookies[i].secure ? "s" : "") + "://" + cookies[i].domain + cookies[i].path;
+                  var cname = cookies[i].name;
 
-                // iterate on cookie to get cookie detail
-                for (var i=0; i<cookies.length; i++) {
-                    var url = "http" + (cookies[i].secure ? "s" : "") + "://" + cookies[i].domain + cookies[i].path;
-                    var cname = cookies[i].name;
+                  // delete cookie
+                  chrome.cookies.remove({
+                      "url": url,
+                      "name": cname
+                  });
+              }
 
-                    // delete cookie
-                    chrome.cookies.remove({
-                        "url": url,
-                        "name": cname
-                    });
-                }
+              // reload currect active tab
+              chrome.tabs.reload();
+          });
+    }, 5000);
 
-                // reload currect active tab
-                chrome.tabs.reload();
-    }
 
-    });
+
+
 });
